@@ -24,8 +24,6 @@ function RegistrationForm() {
             // Register the user.
             await API.register({ email, password });
 
-            console.log("Are we in here?")
-
             // User has been successfully registered, now log them in with the same information.
             await login({ email, password });
 
