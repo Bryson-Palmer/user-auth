@@ -1,6 +1,8 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
+const { User } = require('../models');
+
 const opts = {};
 
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -10,7 +12,7 @@ const authorizeJwtToken = (jwtPayload, done) => {
 
     User.findById(jwtPayload.id)
         // Restrict the data loaded from the user model
-        .select("name email")
+        // .select("email")
         .then(user => {
             if (user) {
                 return done(null, user);

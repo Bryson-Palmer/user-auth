@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { useHistory } from "react-router-dom";
 
-import api from "./API";
+import API from "./API";
 import { useStoreContext } from "../store";
 import { LOGIN_USER, LOGOUT_USER } from "../store/actions";
 
@@ -30,10 +30,10 @@ const applyAuthToken = token => {
     token
 
         // Apply authorization token to every request if logged in
-        ? api.setHeader( "Authorization", token )
+        ? API.setHeader( "Authorization", token )
 
         // Delete auth header
-        : api.setHeader( "Authorization", false );
+        : API.setHeader( "Authorization", false );
 
 }
 
@@ -88,9 +88,10 @@ export const useAuthTokenStore = () => {
 
                 try {
 
-                    const { data } = await api.authenticated();
+                    const { data } = await API.authenticated();
 
                     user = data;
+                    console.log("user", user)
 
                 } catch(res) {
                     
@@ -100,6 +101,7 @@ export const useAuthTokenStore = () => {
 
                 if( user ) dispatch({ type: LOGIN_USER, payload: { token, user } });
 
+                console.log("user", user)
                 setIsDone( true );
 
             }
@@ -136,7 +138,9 @@ export const useLogin = () => {
 
     return async ( credentials ) => {
     
-        const { data: { token: tokenString, user } } = await api.login( credentials );
+        const { data: { token: tokenString, user } } = await API.login( credentials );
+
+        console.log("Are we in here?")
 
         const token = setAuthToken( tokenString );
 
